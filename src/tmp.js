@@ -1,44 +1,28 @@
-function minesweeper(matrix) {
-    let canvas = new Array(matrix.length);
-    for (let i = 0; i < canvas.length; i++) {
-        canvas[i] = new Array(matrix[0].length);
+function renameFiles(names) {
+    let namesCount = new Array(names.length);
+    let resArr = [];
+    for (let i = 0; i < namesCount.length; i++) {
+        namesCount[i] = 0;
     }
+    resArr.push(names[0]);
 
-    for (let i = 0; i < matrix.length; i++) {
-        for (let j = 0; j < matrix[0].length; j++) {
-            if (matrix[i][j] == true) {
-                canvas[i][j] = 'm';
-            } else canvas[i][j] = 0;
-        }
-    }
+    for (let i = 1; i < names.length; i++) {
+        if (names.lastIndexOf(names[i], i - 1) >= 0) {
+            let elemFirstIndex = names.indexOf(names[i]);
 
-    for (let i = 0; i < canvas.length; i++) {
-        for (let j = 0; j < canvas[0].length; j++) {
-            if (canvas[i][j] == 'm') {
-                if (typeof canvas[i - 1] != 'undefined' && typeof canvas[i - 1][j] != 'undefined' && canvas[i - 1][j] != 'm') canvas[i - 1][j]++;
-                if (typeof canvas[i + 1] != 'undefined' && typeof canvas[i + 1][j] != 'undefined' && canvas[i + 1][j] != 'm') canvas[i + 1][j]++;
-                if (typeof canvas[i] != 'undefined' && typeof canvas[i][j - 1] != 'undefined' && canvas[i][j - 1] != 'm') canvas[i][j - 1]++;
-                if (typeof canvas[i] != 'undefined' && typeof canvas[i][j + 1] != 'undefined' && canvas[i][j + 1] != 'm') canvas[i][j + 1]++;
-                if (typeof canvas[i + 1] != 'undefined' && typeof canvas[i + 1][j + 1] != 'undefined' && canvas[i + 1][j + 1] != 'm') canvas[i + 1][j + 1]++;
-                if (typeof canvas[i - 1] != 'undefined' && typeof canvas[i - 1][j + 1] != 'undefined' && canvas[i - 1][j + 1] != 'm') canvas[i - 1][j + 1]++;
-                if (typeof canvas[i + 1] != 'undefined' && typeof canvas[i + 1][j - 1] != 'undefined' && canvas[i + 1][j - 1] != 'm') canvas[i + 1][j - 1]++;
-                if (typeof canvas[i - 1] != 'undefined' && typeof canvas[i - 1][j - 1] != 'undefined' && canvas[i - 1][j - 1] != 'm') canvas[i - 1][j - 1]++;
+            namesCount[elemFirstIndex]++;
+            resArr.push(names[i] + `(${namesCount[elemFirstIndex]})`);
+        } else {
+            if (resArr.indexOf(names[i]) >= 0){
+                let elemFirstIndex = names.indexOf(names[i]);
+                namesCount[elemFirstIndex]++;
+                resArr.push(names[i] + `(${namesCount[elemFirstIndex]})`);
             }
+            else resArr.push(names[i]);
         }
     }
-    for (let i = 0; i < canvas.length; i++) {
-        for (let j = 0; j < canvas[0].length; j++) {
-            if (canvas[i][j] == 'm') canvas[i][j] = 1;
-        }
-    }
-    return canvas;
+
+    return resArr;
 }
-let matrix = [
-    [true, false, false],
-    [false, true, false],
-    [false, false, false],
-];
-let ma = minesweeper(matrix);
-for (let i = 0; i < ma.length; i++) {
-    console.log(ma[i].join(' '));
-}
+// renameFiles(['doc', 'doc', 'image', 'doc(1)', 'doc']);
+console.log(renameFiles(['doc', 'doc', 'image', 'doc(1)', 'doc']));
